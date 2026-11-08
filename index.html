@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Barbería | Sistema de Citas</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- CSS propio -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-dark navbar-custom">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">
+                <i class="bi bi-scissors"></i>
+                Barbería
+            </span>
+
+            <span class="text-light">
+                Sistema de Citas
+            </span>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- SIDEBAR -->
+            <aside class="col-md-3 col-lg-2 sidebar">
+
+                <div class="sidebar-menu">
+
+                    <button class="menu-btn active" onclick="mostrarSeccion('dashboard', this)">
+                        <i class="bi bi-house"></i>
+                        Dashboard
+                    </button>
+
+                    <button class="menu-btn" onclick="mostrarSeccion('agenda', this)">
+                        <i class="bi bi-calendar3"></i>
+                        Agenda
+                    </button>
+
+                    <button class="menu-btn" onclick="mostrarSeccion('clientes', this)">
+                        <i class="bi bi-people"></i>
+                        Clientes
+                    </button>
+
+                    <!-- NUEVO -->
+                    <button class="menu-btn" onclick="mostrarSeccion('caja', this)">
+                        <i class="bi bi-cash-stack"></i>
+                        Caja
+                    </button>
+
+                    <!-- NUEVO -->
+                    <button class="menu-btn" onclick="mostrarSeccion('historial', this)">
+                        <i class="bi bi-clock-history"></i>
+                        Historial
+                    </button>
+
+                    <button class="menu-btn" onclick="abrirModalCita()">
+                        <i class="bi bi-plus-circle"></i>
+                        Nueva cita
+                    </button>
+
+                </div>
+
+            </aside>
+
+            <!-- CONTENIDO -->
+            <main class="col-md-9 col-lg-10 main-content">
+
+                <!-- ================= DASHBOARD ================= -->
+                <section id="dashboard" class="seccion">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h1>Dashboard</h1>
+                            <p class="text-secondary">
+                                Resumen de las citas de hoy
+                            </p>
+                        </div>
+
+                        <button class="btn btn-gold" onclick="abrirModalCita()">
+                            <i class="bi bi-plus-lg"></i>
+                            Nueva cita
+                        </button>
+                    </div>
+
+                    <!-- TARJETAS -->
+                    <div class="row g-4 mb-4">
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="stat-card">
+                                <div>
+                                    <p>Citas de hoy</p>
+                                    <h2 id="totalHoy">0</h2>
+                                </div>
+
+                                <i class="bi bi-calendar-check stat-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="stat-card">
+                                <div>
+                                    <p>Pendientes</p>
+                                    <h2 id="totalPendientes">0</h2>
+                                </div>
+
+                                <i class="bi bi-clock stat-icon"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="stat-card">
+                                <div>
+                                    <p>Confirmadas</p>
+                                    <h2 id="totalConfirmadas">0</h2>
+                                </div>
+
+                                <i class="bi bi-check-circle stat-icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- NUEVO: cambiado a ganancia neta -->
+                        <div class="col-md-6 col-xl-3">
+                            <div class="stat-card">
+                                <div>
+                                    <p>Ganancia neta de hoy</p>
+                                    <h2 id="ingresosHoy">$0</h2>
+                                </div>
+
+                                <i class="bi bi-cash-coin stat-icon"></i>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- CITAS DE HOY -->
+                    <div class="card-custom">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3>
+                                <i class="bi bi-calendar-day"></i>
+                                Citas de hoy
+                            </h3>
+
+                            <button
+                                class="btn btn-outline-light btn-sm"
+                                onclick="mostrarSeccion('agenda', document.querySelectorAll('.menu-btn')[1])"
+                            >
+                                Ver agenda
+                            </button>
+                        </div>
+
+                        <div class="table-responsive">
+
+                            <table class="table table-dark table-hover align-middle">
+
+                                <thead>
+                                    <tr>
+                                        <th>Hora</th>
+                                        <th>Cliente</th>
+                                        <th>Servicio</th>
+                                        <th>Precio</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="tablaDashboard">
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= AGENDA ================= -->
+                <section id="agenda" class="seccion d-none">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+
+                        <div>
+                            <h1>Agenda</h1>
+                            <p class="text-secondary">
+                                Consulta las citas programadas
+                            </p>
+                        </div>
+
+                        <button class="btn btn-gold" onclick="abrirModalCita()">
+                            <i class="bi bi-plus-lg"></i>
+                            Nueva cita
+                        </button>
+
+                    </div>
+
+                    <div class="card-custom">
+
+                        <div class="row mb-4">
+
+                            <div class="col-md-4">
+                                <label class="form-label">
+                                    Seleccionar fecha
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="fechaAgenda"
+                                    class="form-control"
+                                    onchange="mostrarAgenda()"
+                                >
+                            </div>
+
+                        </div>
+
+                        <div id="listaAgenda">
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= CLIENTES ================= -->
+                <section id="clientes" class="seccion d-none">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+
+                        <div>
+                            <h1>Clientes</h1>
+                            <p class="text-secondary">
+                                Gestiona las citas de tus clientes
+                            </p>
+                        </div>
+
+                        <button class="btn btn-gold" onclick="abrirModalCita()">
+                            <i class="bi bi-person-plus"></i>
+                            Agregar cliente
+                        </button>
+
+                    </div>
+
+                    <div class="card-custom">
+
+                        <div class="mb-4">
+
+                            <div class="input-group">
+
+                                <span class="input-group-text">
+                                    <i class="bi bi-search"></i>
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="buscarCliente"
+                                    class="form-control"
+                                    placeholder="Buscar por nombre o teléfono..."
+                                    oninput="mostrarClientes()"
+                                >
+
+                            </div>
+
+                        </div>
+
+                        <div class="table-responsive">
+
+                            <table class="table table-dark table-hover align-middle">
+
+                                <thead>
+                                    <tr>
+                                        <th>Cliente</th>
+                                        <th>Teléfono</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th>Servicio</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="tablaClientes">
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================= CAJA ================= -->
+                <!-- NUEVO: sección de entradas y salidas de dinero -->
+                <section id="caja" class="seccion d-none">
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h1>Caja</h1>
+                            <p class="text-secondary">Registra entradas y salidas de dinero</p>
+                        </div>
+                        <button class="btn btn-gold" onclick="abrirModalMovimiento('entrada')">
+                            <i class="bi bi-plus-lg"></i> Nuevo movimiento
+                        </button>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div>
+                                    <p>Entradas de hoy</p>
+                                    <h2 id="entradasHoy">$0</h2>
+                                </div>
+                                <i class="bi bi-arrow-down-circle stat-icon text-success"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div>
+                                    <p>Salidas de hoy</p>
+                                    <h2 id="salidasHoy">$0</h2>
+                                </div>
+                                <i class="bi bi-arrow-up-circle stat-icon text-danger"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div>
+                                    <p>Neto del día</p>
+                                    <h2 id="netoHoy">$0</h2>
+                                </div>
+                                <i class="bi bi-wallet2 stat-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-custom">
+                        <h3 class="mb-3"><i class="bi bi-list-ul"></i> Movimientos de hoy</h3>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Tipo</th>
+                                        <th>Descripción</th>
+                                        <th>Monto</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaMovimientosHoy"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+
+                <!-- ================= HISTORIAL ================= -->
+                <!-- NUEVO: historial diario y mensual -->
+                <section id="historial" class="seccion d-none">
+
+                    <div class="mb-4">
+                        <h1>Historial</h1>
+                        <p class="text-secondary">Consulta ventas y movimientos por día o mes</p>
+                    </div>
+
+                    <div class="card-custom mb-4">
+                        <div class="row g-3 align-items-end">
+
+                            <div class="col-md-3">
+                                <label class="form-label">Vista</label>
+                                <select id="tipoHistorial" class="form-select" onchange="cambiarVistaHistorial()">
+                                    <option value="diario">Diario</option>
+                                    <option value="mensual">Mensual</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3" id="grupoDia">
+                                <label class="form-label">Día</label>
+                                <input type="date" id="historialDia" class="form-control" onchange="mostrarHistorial()">
+                            </div>
+
+                            <div class="col-md-3 d-none" id="grupoMes">
+                                <label class="form-label">Mes</label>
+                                <input type="month" id="historialMes" class="form-control" onchange="mostrarHistorial()">
+                            </div>
+
+                            <div class="col-md-3">
+                                <button class="btn btn-gold w-100" onclick="mostrarHistorial()">
+                                    <i class="bi bi-search"></i> Consultar
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <div><p>Ingresos por citas</p><h2 id="histIngresos">$0</h2></div>
+                                <i class="bi bi-calendar-check stat-icon"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <div><p>Entradas extra</p><h2 id="histEntradas">$0</h2></div>
+                                <i class="bi bi-arrow-down-circle stat-icon text-success"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <div><p>Salidas</p><h2 id="histSalidas">$0</h2></div>
+                                <i class="bi bi-arrow-up-circle stat-icon text-danger"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-card">
+                                <div><p>Ganancia neta</p><h2 id="histNeto">$0</h2></div>
+                                <i class="bi bi-cash-coin stat-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-custom mb-4">
+                        <h3 class="mb-3"><i class="bi bi-scissors"></i> Citas del periodo</h3>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th>Cliente</th>
+                                        <th>Servicio</th>
+                                        <th>Precio</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaHistorialCitas"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card-custom">
+                        <h3 class="mb-3"><i class="bi bi-cash-stack"></i> Movimientos de caja del periodo</h3>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Tipo</th>
+                                        <th>Descripción</th>
+                                        <th>Monto</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tablaHistorialMovimientos"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+            </main>
+
+        </div>
+    </div>
+
+
+    <!-- ================= MODAL CITA ================= -->
+
+    <div class="modal fade" id="modalCita" tabindex="-1">
+
+        <div class="modal-dialog modal-lg">
+
+            <div class="modal-content modal-custom">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title" id="tituloModal">
+                        Nueva cita
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                    ></button>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <form id="formCita">
+
+                        <input type="hidden" id="citaId">
+
+                        <div class="row g-3">
+
+                            <!-- NOMBRE -->
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre completo *</label>
+                                <input type="text" id="nombre" class="form-control" required>
+                            </div>
+
+                            <!-- TELEFONO -->
+                            <div class="col-md-6">
+                                <label class="form-label">Teléfono *</label>
+                                <input type="tel" id="telefono" class="form-control" placeholder="5512345678" required>
+                            </div>
+
+                            <!-- FECHA -->
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha *</label>
+                                <input type="date" id="fecha" class="form-control" required>
+                            </div>
+
+                            <!-- HORA -->
+                            <div class="col-md-6">
+                                <label class="form-label">Hora *</label>
+                                <input type="time" id="hora" class="form-control" required>
+                            </div>
+
+                            <!-- SERVICIO -->
+                            <div class="col-md-6">
+                                <label class="form-label">Servicio *</label>
+                                <select id="servicio" class="form-select" onchange="actualizarPrecio()" required>
+                                    <option value="">Seleccionar servicio</option>
+                                    <option value="Corte de cabello">Corte de cabello</option>
+                                    <option value="Barba">Barba</option>
+                                    <option value="Combo">Combo (corte + barba)</option>
+                                    <option value="Tinte">Tinte</option>
+                                </select>
+                            </div>
+
+                            <!-- PRECIO -->
+                            <div class="col-md-6">
+                                <label class="form-label">Precio *</label>
+                                <input type="number" id="precio" class="form-control" min="0" required>
+                            </div>
+
+                            <!-- ESTADO -->
+                            <div class="col-md-6">
+                                <label class="form-label">Estado</label>
+                                <select id="estado" class="form-select">
+                                    <option value="pendiente">Pendiente</option>
+                                    <option value="confirmado">Confirmado</option>
+                                    <option value="atendido">Atendido</option>
+                                    <option value="cancelado">Cancelado</option>
+                                </select>
+                            </div>
+
+                            <!-- NOTAS -->
+                            <div class="col-12">
+                                <label class="form-label">Notas</label>
+                                <textarea id="notas" class="form-control" rows="3" placeholder="Información adicional..."></textarea>
+                            </div>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="button" class="btn btn-gold" onclick="guardarCita()">
+                        <i class="bi bi-save"></i>
+                        Guardar cita
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= MODAL MOVIMIENTO ================= -->
+    <!-- NUEVO: modal para entradas/salidas -->
+    <div class="modal fade" id="modalMovimiento" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content modal-custom">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloModalMov">Nuevo movimiento</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formMovimiento">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Tipo *</label>
+                                <select id="movTipo" class="form-select" required>
+                                    <option value="entrada">Entrada</option>
+                                    <option value="salida">Salida</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Monto *</label>
+                                <input type="number" id="movMonto" class="form-control" min="0.01" step="0.01" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Descripción / Motivo *</label>
+                                <input type="text" id="movDescripcion" class="form-control" placeholder="Ej. Compra de shampoo, propina, retiro..." required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Fecha *</label>
+                                <input type="date" id="movFecha" class="form-control" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-gold" onclick="guardarMovimiento()">
+                        <i class="bi bi-save"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <!-- JavaScript propio -->
+    <script src="app.js"></script>
+
+</body>
+</html>

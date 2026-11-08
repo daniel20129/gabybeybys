@@ -1,0 +1,311 @@
+/* =========================
+   CONFIGURACIÓN GENERAL
+========================= */
+
+body {
+    background-color: #1a1a2e;
+    color: white;
+    font-family: "Segoe UI", Arial, sans-serif;
+    min-height: 100vh;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar-custom {
+    background-color: #11111f;
+    border-bottom: 1px solid #2d2d44;
+    padding: 15px 20px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+.navbar-brand i {
+    color: #ffd200;
+    margin-right: 8px;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar {
+    background-color: #11111f;
+    min-height: calc(100vh - 70px);
+    padding: 20px 10px;
+    border-right: 1px solid #2d2d44;
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-btn {
+    background: transparent;
+    border: none;
+    color: #a0a0b8;
+    text-align: left;
+    padding: 13px 15px;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: 0.2s;
+}
+
+.menu-btn i {
+    margin-right: 10px;
+}
+
+.menu-btn:hover {
+    background-color: #2d2d44;
+    color: white;
+}
+
+.menu-btn.active {
+    background-color: #ffd200;
+    color: #11111f;
+    font-weight: bold;
+}
+
+
+/* =========================
+   CONTENIDO
+========================= */
+
+.main-content {
+    padding: 30px;
+}
+
+.main-content h1 {
+    font-weight: 700;
+}
+
+.text-secondary {
+    color: #a0a0b8 !important;
+}
+
+
+/* =========================
+   BOTONES
+========================= */
+
+.btn-gold {
+    background-color: #ffd200;
+    color: #11111f;
+    border: none;
+    font-weight: 600;
+}
+
+.btn-gold:hover {
+    background-color: #f7c800;
+    color: #11111f;
+}
+
+
+/* =========================
+   TARJETAS ESTADÍSTICAS
+========================= */
+
+.stat-card {
+    background-color: #2d2d44;
+    border: 1px solid #41415c;
+    border-radius: 12px;
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 120px;
+}
+
+.stat-card p {
+    color: #a0a0b8;
+    margin-bottom: 5px;
+}
+
+.stat-card h2 {
+    margin: 0;
+    font-weight: bold;
+}
+
+.stat-icon {
+    font-size: 35px;
+    color: #ffd200;
+}
+
+
+/* =========================
+   TARJETAS GENERALES
+========================= */
+
+.card-custom {
+    background-color: #222238;
+    border: 1px solid #35354d;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.card-custom h3 {
+    font-size: 20px;
+}
+
+
+/* =========================
+   TABLAS
+========================= */
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    color: #ffd200;
+    border-bottom-color: #41415c;
+}
+
+.table td {
+    border-bottom-color: #35354d;
+}
+
+
+/* =========================
+   FORMULARIOS
+========================= */
+
+.form-control,
+.form-select {
+    background-color: #2d2d44;
+    color: white;
+    border: 1px solid #4a4a66;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: #2d2d44;
+    color: white;
+    border-color: #ffd200;
+    box-shadow: 0 0 0 0.2rem rgba(255, 210, 0, 0.15);
+}
+
+.form-control::placeholder {
+    color: #88889f;
+}
+
+.form-label {
+    font-weight: 600;
+}
+
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-custom {
+    background-color: #222238;
+    color: white;
+}
+
+.modal-custom .modal-header {
+    border-bottom-color: #41415c;
+}
+
+.modal-custom .modal-footer {
+    border-top-color: #41415c;
+}
+
+
+/* =========================
+   BADGES
+========================= */
+
+.estado {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.estado-pendiente {
+    background-color: #f39c12;
+    color: #111;
+}
+
+.estado-confirmado {
+    background-color: #2ecc71;
+    color: #111;
+}
+
+.estado-atendido {
+    background-color: #3498db;
+    color: white;
+}
+
+.estado-cancelado {
+    background-color: #e74c3c;
+    color: white;
+}
+
+
+/* =========================
+   AGENDA
+========================= */
+
+.cita-agenda {
+    background-color: #2d2d44;
+    border-left: 4px solid #ffd200;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.cita-hora {
+    color: #ffd200;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.cita-nombre {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 767px) {
+
+    .sidebar {
+        min-height: auto;
+        border-right: none;
+        border-bottom: 1px solid #2d2d44;
+    }
+
+    .sidebar-menu {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .menu-btn {
+        white-space: nowrap;
+    }
+
+    .main-content {
+        padding: 20px 15px;
+    }
+
+    .stat-card {
+        min-height: 100px;
+    }
+
+}
